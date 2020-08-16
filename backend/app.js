@@ -1,17 +1,16 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
 const postsRoutes = require("./routes/posts");
+const path = require("path");
 
 const app = express();
-
 //0OUOu1bChg6IPb5g
 mongoose
-  .connect(
-    "mongodb+srv://prachi:0OUOu1bChg6IPb5g@cluster0.7fcpy.mongodb.net/node-angular?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect("mongodb://localhost:27017/node-angular", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Connected to database!");
   })
@@ -21,6 +20,7 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/images", express.static(path.join("backend/images")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
