@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 import { User } from './auth.model';
-import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
+
+const BACKEND_URL = environment.apiUrl + '/users/';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private token: string;
@@ -33,23 +36,21 @@ export class AuthService {
 
   createUser(email: string, password: string) {
     const userData: User = { email: email, password: password };
-    this.http
-      .post('http://localhost:3000/api/users/signup', userData)
-      .subscribe(
-        (response) => {
-          this.router.navigate(['/']);
-        },
-        (error) => {
-          this.authStatusListener.next(false);
-        }
-      );
+    this.http.post(BACKEND_URL + 'signup', userData).subscribe(
+      (response) => {
+        this.router.navigate(['/']);
+      },
+      (error) => {
+        this.authStatusListener.next(false);
+      }
+    );
   }
 
   login(email: string, password: string) {
     const userData: User = { email: email, password: password };
     this.http
       .post<{ token: string; expiresIn: number; userId: string }>(
-        'http://localhost:3000/api/users/login',
+        BACKEND_URL + 'login',
         userData
       )
       .subscribe(
@@ -95,7 +96,6 @@ export class AuthService {
   }
 
   private setAuthTimer(duration: number) {
-    console.log('Setting timer ' + duration);
     this.tokenTimer = setTimeout(() => {
       this.logout();
     }, duration * 1000);
