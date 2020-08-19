@@ -21,7 +21,7 @@ router.post("/signup", (req, res, next) => {
       })
       .catch((err) => {
         res.status(500).json({
-          error: err,
+          message: "Invalid User Credentials",
         });
       });
   });
@@ -53,6 +53,7 @@ router.post("/login", (req, res, next) => {
       res.status(200).json({
         token: token,
         expiresIn: 3600,
+        userId: fetchedUser._id,
       });
     })
     .catch((err) => {

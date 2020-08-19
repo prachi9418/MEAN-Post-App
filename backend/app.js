@@ -11,6 +11,7 @@ mongoose
   .connect("mongodb://localhost:27017/node-angular", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
   })
   .then(() => {
     console.log("Connected to database!");
