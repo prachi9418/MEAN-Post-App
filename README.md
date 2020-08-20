@@ -2,13 +2,17 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.5.
 
+## Backend Server
+
+Run npm run start:server to run nodejs enviorment. This will run all the API development with framework express and Mongoose as a database.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `ng generate component component-name --skipTests=true` to generate a new component without spec file. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
