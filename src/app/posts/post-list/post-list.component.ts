@@ -5,6 +5,7 @@ import { Post } from '../post.model';
 import { PostsService } from '../posts.service';
 import { PageEvent } from '@angular/material/paginator';
 import { AuthService } from 'src/app/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-post-list',
@@ -25,18 +26,24 @@ export class PostListComponent implements OnInit, OnDestroy {
   postsOptions = [1, 2, 5, 10];
   isAuthStatus = false;
   userId: string;
+  isVerified = false;
 
   private postsSub: Subscription;
   private authStatusSub: Subscription;
 
   constructor(
     public postsService: PostsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
     this.isLoading = true;
     this.userId = this.authService.getUserId();
+    this.isVerified = this.authService.getVerifiedStatus();
+    if (!this.isVerified && this.userId) {
+      this.openSnackBar();
+    }
     this.postsService.getPosts(this.postPerPage, this.currentPage);
     this.postsSub = this.postsService
       .getPostUpdateListener()
@@ -54,6 +61,15 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.isAuthStatus = isAuthenticated;
         this.userId = this.authService.getUserId();
       });
+  }
+
+  openSnackBar() {
+    console.log('call the notify event');
+    this._snackBar.open('Please confirm your email from inbox', 'Okay', {
+      duration: 5000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
   }
 
   onDelete(postId: string) {

@@ -44,3 +44,9 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+/angular.json
+/nodemon.json
+/Procfile
+/src/enviornments/enviornment.prod.ts
+/backend/images
+sendgrid.env

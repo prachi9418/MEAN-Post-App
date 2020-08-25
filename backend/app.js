@@ -6,10 +6,14 @@ const userRoutes = require("./routes/users");
 const path = require("path");
 
 const app = express();
-//0OUOu1bChg6IPb5g
 mongoose
   .connect(
-    "mongodb://localhost:27017/node-angular",
+    //mongodb+srv://prachi:" +
+    //process.env.AWS_ATLAS_PW +
+    //"@cluster0.iojal.mongodb.net/node-angular?retryWrites=true&w=majority
+    "mongodb+srv://prachi:" +
+      process.env.AWS_ATLAS_PW +
+      "@cluster0.iojal.mongodb.net/node-angular?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -25,7 +29,7 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use("/images", express.static(path.join("images")));
+app.use("/images", express.static(path.join("backend/images")));
 //app.use("/", express.static(__dirname,path.join("angular"))); static files for rendering script files
 
 app.use((req, res, next) => {

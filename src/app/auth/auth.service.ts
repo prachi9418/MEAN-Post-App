@@ -13,6 +13,7 @@ export class AuthService {
   private tokenTimer: any;
   private isAuthenticated = false;
   private userId: string;
+  private isVerified = false;
   private authStatusListener = new Subject<boolean>();
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -22,6 +23,10 @@ export class AuthService {
 
   getUserId() {
     return this.userId;
+  }
+
+  getVerifiedStatus() {
+    return this.isVerified;
   }
 
   //listener value is quite not updated earlier while sharing in component as it is synchronous
@@ -49,10 +54,12 @@ export class AuthService {
   login(email: string, password: string) {
     const userData: User = { email: email, password: password };
     this.http
-      .post<{ token: string; expiresIn: number; userId: string }>(
-        BACKEND_URL + 'login',
-        userData
-      )
+      .post<{
+        token: string;
+        expiresIn: number;
+        userId: string;
+        isVerified: boolean;
+      }>(BACKEND_URL + 'login', userData)
       .subscribe(
         (response) => {
           const token = response.token;
@@ -61,7 +68,7 @@ export class AuthService {
             const authExpiration = response.expiresIn;
             this.isAuthenticated = true;
             this.userId = response.userId;
-            console.log(this.userId);
+            this.isVerified = response.isVerified;
             this.setAuthTimer(authExpiration);
             this.authStatusListener.next(true);
             const now = new Date();
